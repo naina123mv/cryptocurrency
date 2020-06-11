@@ -36,15 +36,10 @@ class Transaction {
         }
 
         if(!this.outputMap[recipient]) {
-
             this.outputMap[recipient] = amount;
-
         } else {
-
             this.outputMap[recipient] = this.outputMap[recipient] + amount;
         }
-
-        
 
         this.outputMap[senderWallet.publicKey] = this.outputMap[senderWallet.publicKey] - amount;
 

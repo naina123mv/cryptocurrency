@@ -108,8 +108,7 @@ describe('Transaction', () => {
                     transaction.update({
                         senderWallet, recipient:'foo', amount : 999999
                     })
-                }).toThrow('Amount exceeds balance');
-                
+                }).toThrow('Amount exceeds balance');                
             });
         });
         
