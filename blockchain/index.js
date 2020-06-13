@@ -23,6 +23,11 @@ class Blockchain{
             const block = chain[i];
             const transactionSet = new Set();   
             let rewardsTransactionCount = 0;
+            
+            let totalTransactionCount = -1; //since reward transaction has a count of 1, that does not need to be counted
+            for(let transaction of block.data) {
+                totalTransactionCount += transaction.count;
+            }
 
             for(let transaction of block.data) {
                 if(transaction.input.address === REWARD_INPUT.address) {
@@ -33,7 +38,7 @@ class Blockchain{
                         return false;
                     }
 
-                    if(Object.values(transaction.outputMap)[0] !== MINING_REWARD) {
+                    if(Object.values(transaction.outputMap)[0] !== (MINING_REWARD + 2*totalTransactionCount)) {
                         console.error('Miner reward amount is invalid');
                         return false;
                     }
@@ -43,15 +48,15 @@ class Blockchain{
                         return false;
                     }
 
-                    const trueBalance = Wallet.calculateBalance({
-                        chain : this.chain,
-                        address : transaction.input.address
-                    });
+                    // const trueBalance = Wallet.calculateBalance({
+                    //     chain : this.chain,
+                    //     address : transaction.input.address
+                    // });
 
-                    if(transaction.input.amount !== trueBalance) {
-                        console.error('Invalid input amount');
-                        return false;
-                    }
+                    // if(transaction.input.amount !== trueBalance) {
+                    //     console.error('Invalid input amount');
+                    //     return false;
+                    // }
 
                     if(transactionSet.has(transaction)) {
                         console.error('An identical transaction appears more than once in the block');

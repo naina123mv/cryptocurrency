@@ -12,15 +12,20 @@ class TransactionMiner {
     mineTransactions() {
         //get valid transactions from the pool
         const validTransactions = this.transactionPool.validTransactions();
-
+        
+        let totalTransactionCount = 0;
+        for(let transaction of validTransactions) {
+            totalTransactionCount += transaction.count;
+        }
         //generate miner reward
         validTransactions.push(
-            Transaction.rewardTransaction({ minerWallet : this.wallet})
+            Transaction.rewardTransaction({ minerWallet : this.wallet, totalTransactionCount})
         );
 
         //add blk with these to blkchain
         this.blockchain.addBlock({ data : validTransactions });
 
+        
         //broadcast the updated chain
         this.pubsub.broadcastChain();
 
