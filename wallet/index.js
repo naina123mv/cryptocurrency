@@ -17,10 +17,18 @@ class Wallet {
     }
 
     createTransaction({ recipient, amount, chain} ){
+        if(!amount || amount<1) {
+            throw new Error('Invalid amount');  //new addition
+        }
+
+        if(recipient === this.publicKey) {
+            throw new Error('Recipient address is same as yours'); //new addition
+        }
+        
         if (chain) {
             this.balance = Wallet.calculateBalance({ chain, address: this.publicKey });
         }   
-        if (amount > this.balance){
+        if (amount+2 > this.balance){   //changed
             throw new Error ('Amount exceeds the balance');
         }
 

@@ -12,7 +12,12 @@ class TransactionMiner {
     mineTransactions() {
         //get valid transactions from the pool
         const validTransactions = this.transactionPool.validTransactions();
-        
+        if(validTransactions.length === 0) {
+            console.log("Empty pool");
+            this.transactionPool.clear();
+            return;
+        }
+
         let totalTransactionCount = 0;
         for(let transaction of validTransactions) {
             totalTransactionCount += transaction.count;

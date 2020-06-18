@@ -32,6 +32,15 @@ class Transaction {
     }
 
     update({ senderWallet, recipient, amount}) {
+        //add cases for invalid amt and invalid recipient
+        if(!amount || amount<1) {
+            throw new Error('Invalid amount');  //new addition
+        }
+
+        if(recipient === senderWallet.publicKey) {
+            throw new Error('Recipient address is same as issuer'); //new addition
+        }
+
         if ((amount+2) > this.outputMap[senderWallet.publicKey]) {
             throw new Error('Amount exceeds balance');
         }

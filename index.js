@@ -38,6 +38,10 @@ app.post('/api/mine', (req, res) => {
 app.post('/api/transact', (req, res) => {
     const { amount, recipient }=  req.body;
 
+    if (!recipient) { //New addition
+        res.json({type : 'error', message : 'No recipient defined'});
+    }
+
     let transaction = transactionPool
     .existingTransaction({ inputAddress : wallet.publicKey});
 
